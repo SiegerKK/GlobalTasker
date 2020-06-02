@@ -42,10 +42,7 @@ class TaskViewActivity : AppCompatActivity() {
         tvTaskName.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
         tvTaskDescription.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
 
-        // Test code
-        tvTaskName.text = task.name
-        tvTaskDescription.text = task.description
-        //--------//
+        initTaskViews()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -56,5 +53,10 @@ class TaskViewActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun initTaskViews(){
+        tvTaskName.text = task.name
+        tvTaskDescription.text = task.description
     }
 }

@@ -36,8 +36,7 @@ class TaskEditActivity : AppCompatActivity() {
         val taskID = intent.getLongExtra(TASK_ID, -1L).toInt()
         task = if(taskID != -1) GlobalTaskerApplication.tasks[taskID]
                 else Task(-1, "", "")
-        findViewById<TextInputEditText>(R.id.tfTaskName).setText(task.name)
-        findViewById<TextInputEditText>(R.id.tfTaskDescription).setText(task.description)
+        initTaskViews()
         //--------//
     }
 
@@ -69,5 +68,10 @@ class TaskEditActivity : AppCompatActivity() {
     private fun saveTask(){
 //        TODO: save task to DB
         Snackbar.make(findViewById(R.id.baseLayoutTaskEdit), "Saved", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun initTaskViews(){
+        findViewById<TextInputEditText>(R.id.tfTaskName).setText(task.name)
+        findViewById<TextInputEditText>(R.id.tfTaskDescription).setText(task.description)
     }
 }
