@@ -12,7 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+
+        supportActionBar?.title = "Tasks"
 
         // Plus button
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
