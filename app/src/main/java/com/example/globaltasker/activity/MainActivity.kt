@@ -1,24 +1,34 @@
-package com.example.globaltasker
+package com.example.globaltasker.activity
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.globaltasker.GlobalTaskerApplication.Companion.tasks
+import com.example.globaltasker.R
+import com.example.globaltasker.adapter.TaskListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var rvTaskList: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        rvTaskList = findViewById<RecyclerView>(R.id.rvTaskList)
 
         supportActionBar?.title = "Tasks"
 
         // Plus button
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            TaskEditActivity.startActivity(this)
+        }
+        rvTaskList.layoutManager = LinearLayoutManager(this)
+        rvTaskList.adapter = TaskListAdapter(tasks){
+            TaskViewActivity.startActivity(this, it.id)
         }
     }
 
