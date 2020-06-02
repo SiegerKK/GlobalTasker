@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/baseLayoutTaskEdit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/tvTaskName"
+        android:id="@+id/tfTaskName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
@@ -15,10 +16,10 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/tvTaskDescription"
+        android:id="@+id/tfTaskDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:layout_constraintTop_toBottomOf="@+id/tvTaskName" />
+        app:layout_constraintTop_toBottomOf="@+id/tfTaskName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
