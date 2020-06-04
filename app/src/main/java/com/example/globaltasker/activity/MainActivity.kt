@@ -10,7 +10,7 @@ import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
 import com.example.globaltasker.adapter.TaskListAdapter
 import com.example.globaltasker.persistence.model.Task
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var rvTaskList: RecyclerView
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         initRvTaskList()
 
         // Plus button
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+        fab.setOnClickListener {
             TaskEditActivity.startActivity(this)
         }
     }
