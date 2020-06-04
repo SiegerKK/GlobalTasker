@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globaltasker.R
-import com.example.globaltasker.model.Task
+import com.example.globaltasker.persistence.model.Task
 import kotlinx.android.synthetic.main.item_task.view.*
 
 class TaskListAdapter(private val tasks: List<Task>, private val listener: (Task) -> Unit) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {

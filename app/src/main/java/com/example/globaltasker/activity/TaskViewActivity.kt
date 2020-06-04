@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
-import com.example.globaltasker.model.Task
+import com.example.globaltasker.persistence.model.Task
 
 class TaskViewActivity : AppCompatActivity() {
     lateinit var task: Task
