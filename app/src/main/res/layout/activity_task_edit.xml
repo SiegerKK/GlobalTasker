@@ -8,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/tfTaskName"
+        android:id="@+id/teTaskName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
@@ -16,10 +16,10 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/tfTaskDescription"
+        android:id="@+id/teTaskDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:layout_constraintTop_toBottomOf="@+id/tfTaskName" />
+        app:layout_constraintTop_toBottomOf="@+id/teTaskName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,17 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
-import com.example.globaltasker.model.Task
+import com.example.globaltasker.persistence.model.DEFAULT_TASK_ID
+import com.example.globaltasker.persistence.model.Task
+import kotlinx.android.synthetic.main.activity_task_view.*
 
 class TaskViewActivity : AppCompatActivity() {
     lateinit var task: Task
-
-    lateinit var tvTaskName: TextView
-    lateinit var tvTaskDescription: TextView
 
     companion object{
         const val TASK_ID = "TASK_ID"
@@ -33,16 +31,18 @@ class TaskViewActivity : AppCompatActivity() {
         // Action bar
         supportActionBar?.title = "Task"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
-        // Init fields
-        task = GlobalTaskerApplication.tasks[intent.getLongExtra(TASK_ID, -1L).toInt()]
-        tvTaskName = findViewById<TextView>(R.id.tvTaskName)
-        tvTaskDescription = findViewById<TextView>(R.id.tvTaskDescription)
+    override fun onResume() {
+        super.onResume()
 
-        tvTaskName.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
-        tvTaskDescription.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
-
+        val taskId = intent.getLongExtra(TASK_ID, DEFAULT_TASK_ID)
+        task = getTask(taskId)
         initTaskViews()
+    }
+
+    private fun getTask(id: Long): Task{
+        return GlobalTaskerApplication.getDatabase().taskDao().getById(id)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -58,5 +58,8 @@ class TaskViewActivity : AppCompatActivity() {
     private fun initTaskViews(){
         tvTaskName.text = task.name
         tvTaskDescription.text = task.description
+
+        tvTaskName.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
+        tvTaskDescription.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
     }
 }
