@@ -10,7 +10,7 @@ interface TaskDao {
     fun getAll(): List<Task>
 
     @Query("SELECT * FROM task WHERE id = :id")
-    fun getByID(id: Long): Task
+    fun getById(id: Long): Task
 
     // IGNORE: return -1 if object already exist
     @Insert(onConflict = OnConflictStrategy.IGNORE)

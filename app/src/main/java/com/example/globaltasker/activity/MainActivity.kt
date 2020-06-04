@@ -6,9 +6,10 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.globaltasker.GlobalTaskerApplication.Companion.tasks
+import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
 import com.example.globaltasker.adapter.TaskListAdapter
+import com.example.globaltasker.persistence.model.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -18,18 +19,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        rvTaskList = findViewById<RecyclerView>(R.id.rvTaskList)
 
         supportActionBar?.title = "Tasks"
+
+        initRvTaskList()
 
         // Plus button
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             TaskEditActivity.startActivity(this)
         }
-        rvTaskList.layoutManager = LinearLayoutManager(this)
-        rvTaskList.adapter = TaskListAdapter(tasks){
-            TaskViewActivity.startActivity(this, it.id)
-        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (rvTaskList.adapter as TaskListAdapter).replaceList(getTaskListFromDb())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -46,5 +49,17 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun initRvTaskList(){
+        rvTaskList = findViewById<RecyclerView>(R.id.rvTaskList)
+        rvTaskList.layoutManager = LinearLayoutManager(this)
+        rvTaskList.adapter = TaskListAdapter(getTaskListFromDb()){
+            TaskViewActivity.startActivity(this, it.id)
+        }
+    }
+
+    private fun getTaskListFromDb(): List<Task>{
+        return GlobalTaskerApplication.getDatabase().taskDao().getAll()
     }
 }

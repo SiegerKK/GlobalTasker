@@ -3,16 +3,18 @@ package com.example.globaltasker
 import android.app.Application
 import androidx.room.Room
 import com.example.globaltasker.persistence.AppDatabase
-import com.example.globaltasker.persistence.model.Task
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
 
 class GlobalTaskerApplication : Application() {
-    companion object{
-        val tasks: ArrayList<Task> = ArrayList()
+    companion object {
+        private lateinit var database: AppDatabase
+
+        fun getDatabase(): AppDatabase{
+            return database
+        }
     }
-    private lateinit var database: AppDatabase
 
     override fun onCreate() {
         super.onCreate()
@@ -30,7 +32,5 @@ class GlobalTaskerApplication : Application() {
 
     }
 
-    fun getDatabase(): AppDatabase{
-        return database
-    }
+
 }

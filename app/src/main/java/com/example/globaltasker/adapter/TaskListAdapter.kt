@@ -8,7 +8,7 @@ import com.example.globaltasker.R
 import com.example.globaltasker.persistence.model.Task
 import kotlinx.android.synthetic.main.item_task.view.*
 
-class TaskListAdapter(private val tasks: List<Task>, private val listener: (Task) -> Unit) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+class TaskListAdapter(private var tasks: List<Task>, private val listener: (Task) -> Unit) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
     override fun getItemCount(): Int = tasks.size
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder{
@@ -17,6 +17,11 @@ class TaskListAdapter(private val tasks: List<Task>, private val listener: (Task
     }
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(tasks[position], listener)
+    }
+    fun replaceList(list: List<Task>){
+        tasks = list
+        // DONT FORGET !!!
+        notifyDataSetChanged()
     }
 
     //-------------------- Local class --------------------//

@@ -35,7 +35,8 @@ class TaskViewActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Init fields
-        task = GlobalTaskerApplication.tasks[intent.getLongExtra(TASK_ID, -1L).toInt()]
+        val taskId = intent.getLongExtra(TASK_ID, -1L)
+        task = getTask(taskId)
         tvTaskName = findViewById<TextView>(R.id.tvTaskName)
         tvTaskDescription = findViewById<TextView>(R.id.tvTaskDescription)
 
@@ -43,6 +44,10 @@ class TaskViewActivity : AppCompatActivity() {
         tvTaskDescription.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
 
         initTaskViews()
+    }
+
+    private fun getTask(id: Long): Task{
+        return GlobalTaskerApplication.getDatabase().taskDao().getById(id)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
