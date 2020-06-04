@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
+import com.example.globaltasker.persistence.model.DEFAULT_TASK_ID
 import com.example.globaltasker.persistence.model.Task
 import kotlinx.android.synthetic.main.activity_task_edit.*
 
@@ -17,7 +18,7 @@ class TaskEditActivity : AppCompatActivity() {
     companion object{
         const val TASK_ID = "TASK_ID"
 
-        fun startActivity(context: Context, id: Long? = -1L){
+        fun startActivity(context: Context, id: Long? = DEFAULT_TASK_ID){
             val intent = Intent(context, TaskEditActivity::class.java)
             intent.putExtra(TASK_ID, id)
             context.startActivity(intent)
@@ -32,8 +33,8 @@ class TaskEditActivity : AppCompatActivity() {
 
         // Test code
 //        TODO: get from DB
-        val taskID = intent.getLongExtra(TASK_ID, -1L)
-        task = if(taskID != -1L) getTask(taskID)
+        val taskID = intent.getLongExtra(TASK_ID, DEFAULT_TASK_ID)
+        task = if(taskID != DEFAULT_TASK_ID) getTask(taskID)
                 else Task(name = "", description = "")
         initTaskViews()
         //--------//

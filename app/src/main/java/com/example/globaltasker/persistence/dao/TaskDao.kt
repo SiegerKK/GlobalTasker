@@ -25,6 +25,7 @@ interface TaskDao {
 
     fun upsert(task: Task) {
         val id = insert(task)
+        // -1L -> ERROR CODE, NOT DEFAULT_TASK_ID
         if(id == -1L)
             update(task)
     }
