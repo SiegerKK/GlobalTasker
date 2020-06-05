@@ -49,7 +49,7 @@ class TaskViewActivity : AppCompatActivity() {
 
         if(START_EDIT_ACTIVITY == requestCode){
             if(TaskEditActivity.RESULT_TASK_DELETED == resultCode){
-                setResult(RESULT_TASK_DELETED)
+                setResult(RESULT_TASK_DELETED, data)
                 finish()
             }
         }
@@ -68,7 +68,8 @@ class TaskViewActivity : AppCompatActivity() {
         return when(item.itemId){
             R.id.action_delete -> {
                 deleteTask()
-                setResult(TaskEditActivity.RESULT_TASK_DELETED)
+                intent.putExtra(TASK_ID, task)
+                setResult(RESULT_TASK_DELETED, intent)
                 finish()
                 true
             }

@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        (rvTaskList.adapter as TaskListAdapter).replaceList(getTaskListFromDb())
+        updateTaskList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -70,6 +69,9 @@ class MainActivity : AppCompatActivity() {
     private fun getTaskListFromDb(): List<Task>{
         return GlobalTaskerApplication.getDatabase().taskDao().getAll()
     }
+    fun updateTaskList(){
+        (rvTaskList.adapter as TaskListAdapter).replaceList(getTaskListFromDb())
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -78,11 +80,17 @@ class MainActivity : AppCompatActivity() {
             if(TaskEditActivity.RESULT_TASK_DELETED == resultCode){
                 val snackbar = Snackbar.make(rvTaskList, "Revert deleting?", Snackbar.LENGTH_SHORT)
                 snackbar.duration = 4000
-                snackbar.setAction(R.string.undo, View.OnClickListener { fun onClick(){
-//                    TODO: revert deleting
-                } })
+                snackbar.setAction(R.string.undo, RestoreTaskOnClickListener(this, data!!.getSerializableExtra(TaskEditActivity.TASK_ID) as Task))
                 snackbar.show()
             }
+        }
+    }
+
+    //-------------------Local classes---------------------//
+    class RestoreTaskOnClickListener(var mainActivity: MainActivity, var task: Task): View.OnClickListener {
+        override fun onClick(v: View?) {
+            GlobalTaskerApplication.getDatabase().taskDao().insert(task)
+            mainActivity.updateTaskList()
         }
     }
 }

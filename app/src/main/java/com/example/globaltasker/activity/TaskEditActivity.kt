@@ -33,13 +33,10 @@ class TaskEditActivity : AppCompatActivity() {
         supportActionBar?.title = "Edit task"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Test code
-//        TODO: get from DB
         val taskID = intent.getLongExtra(TASK_ID, DEFAULT_TASK_ID)
         task = if(taskID != DEFAULT_TASK_ID) getTask(taskID)
                 else Task(name = "", description = "")
         initTaskViews()
-        //--------//
     }
 
     override fun onBackPressed() {
@@ -50,7 +47,8 @@ class TaskEditActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_task_edit, menu)
-        menu.findItem(R.id.action_delete).isVisible = false
+        if(task.id == DEFAULT_TASK_ID)
+            menu.findItem(R.id.action_delete).isVisible = false
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -61,8 +59,8 @@ class TaskEditActivity : AppCompatActivity() {
             }
             R.id.action_delete -> {
                 deleteTask()
-                if(task.id != DEFAULT_TASK_ID)
-                    setResult(RESULT_TASK_DELETED)
+                intent.putExtra(TASK_ID, task)
+                setResult(RESULT_TASK_DELETED, intent)
                 finish()
                 true
             }
