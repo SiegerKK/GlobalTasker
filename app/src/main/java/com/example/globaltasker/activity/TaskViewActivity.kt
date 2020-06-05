@@ -1,8 +1,9 @@
 package com.example.globaltasker.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.globaltasker.GlobalTaskerApplication
@@ -17,10 +18,14 @@ class TaskViewActivity : AppCompatActivity() {
     companion object{
         const val TASK_ID = "TASK_ID"
 
-        fun startActivity(context: Context, id: Long? = -1){
-            val intent = Intent(context, TaskViewActivity::class.java)
+        const val START_EDIT_ACTIVITY = 11
+
+        const val RESULT_TASK_DELETED = 11
+
+        fun startActivityForResult(activity: Activity, id: Long? = -1, requestCode: Int){
+            val intent = Intent(activity, TaskViewActivity::class.java)
             intent.putExtra(TASK_ID, id)
-            context.startActivity(intent)
+            activity.startActivityForResult(intent, requestCode)
         }
     }
 
@@ -32,7 +37,6 @@ class TaskViewActivity : AppCompatActivity() {
         supportActionBar?.title = "Task"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-
     override fun onResume() {
         super.onResume()
 
@@ -40,13 +44,34 @@ class TaskViewActivity : AppCompatActivity() {
         task = getTask(taskId)
         initTaskViews()
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(START_EDIT_ACTIVITY == requestCode){
+            if(TaskEditActivity.RESULT_TASK_DELETED == resultCode){
+                setResult(RESULT_TASK_DELETED)
+                finish()
+            }
+        }
+    }
 
     private fun getTask(id: Long): Task{
         return GlobalTaskerApplication.getDatabase().taskDao().getById(id)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_task_view, menu)
+        return true
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
+            R.id.action_delete -> {
+                deleteTask()
+                setResult(TaskEditActivity.RESULT_TASK_DELETED)
+                finish()
+                true
+            }
             android.R.id.home -> {
                 finish()
                 true
@@ -59,7 +84,11 @@ class TaskViewActivity : AppCompatActivity() {
         tvTaskName.text = task.name
         tvTaskDescription.text = task.description
 
-        tvTaskName.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
-        tvTaskDescription.setOnClickListener { TaskEditActivity.startActivity(this, task.id) }
+        tvTaskName.setOnClickListener { TaskEditActivity.startActivityForResult(this, task.id, START_EDIT_ACTIVITY) }
+        tvTaskDescription.setOnClickListener { TaskEditActivity.startActivityForResult(this, task.id, START_EDIT_ACTIVITY) }
+    }
+
+    private fun deleteTask(){
+        GlobalTaskerApplication.getDatabase().taskDao().delete(task)
     }
 }

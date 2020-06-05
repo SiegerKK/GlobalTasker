@@ -1,6 +1,6 @@
 package com.example.globaltasker.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -18,10 +18,12 @@ class TaskEditActivity : AppCompatActivity() {
     companion object{
         const val TASK_ID = "TASK_ID"
 
-        fun startActivity(context: Context, id: Long? = DEFAULT_TASK_ID){
-            val intent = Intent(context, TaskEditActivity::class.java)
+        const val RESULT_TASK_DELETED = 11
+
+            fun startActivityForResult(activity: Activity, id: Long? = DEFAULT_TASK_ID, requestCode: Int){
+            val intent = Intent(activity, TaskEditActivity::class.java)
             intent.putExtra(TASK_ID, id)
-            context.startActivity(intent)
+            activity.startActivityForResult(intent, requestCode)
         }
     }
 
@@ -48,11 +50,19 @@ class TaskEditActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_task_edit, menu)
+        menu.findItem(R.id.action_delete).isVisible = false
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.action_close -> {
+                finish()
+                true
+            }
+            R.id.action_delete -> {
+                deleteTask()
+                if(task.id != DEFAULT_TASK_ID)
+                    setResult(RESULT_TASK_DELETED)
                 finish()
                 true
             }
@@ -65,11 +75,17 @@ class TaskEditActivity : AppCompatActivity() {
         }
     }
 
+    private fun deleteTask(){
+        GlobalTaskerApplication.getDatabase().taskDao().delete(task)
+    }
     private fun saveTask(){
-        task.name = teTaskName.text.toString()
-        task.description = teTaskDescription.text.toString()
-        GlobalTaskerApplication.getDatabase().taskDao().upsert(task)
-//        Snackbar.make(findViewById(R.id.baseLayoutTaskEdit), "Saved", Snackbar.LENGTH_SHORT).show()
+        // Is it correct?
+        if(teTaskName.text!!.isNotEmpty()) {
+            task.name = teTaskName.text.toString()
+            task.description = teTaskDescription.text.toString()
+
+            GlobalTaskerApplication.getDatabase().taskDao().upsert(task)
+        }
     }
     private fun getTask(id: Long): Task{
         return GlobalTaskerApplication.getDatabase().taskDao().getById(id)
