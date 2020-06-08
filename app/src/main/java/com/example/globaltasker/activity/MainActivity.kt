@@ -7,16 +7,16 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
 import com.example.globaltasker.adapter.TaskListAdapter
 import com.example.globaltasker.persistence.model.Task
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
+
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var rvTaskList: RecyclerView
 
     companion object {
         const val START_EDIT_ACTIVITY = 11
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        registerForContextMenu(rvTaskList);
 
         supportActionBar?.title = "Tasks"
 
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         updateTaskList()
     }
 
+    // Action bar
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -59,7 +61,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRvTaskList(){
-        rvTaskList = findViewById<RecyclerView>(R.id.rvTaskList)
         rvTaskList.layoutManager = LinearLayoutManager(this)
         rvTaskList.adapter = TaskListAdapter(getTaskListFromDb()){
             TaskViewActivity.startActivityForResult(this, it.id, START_VIEW_ACTIVITY)
