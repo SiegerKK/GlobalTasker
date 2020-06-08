@@ -1,5 +1,6 @@
 package com.example.globaltasker.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,10 +19,15 @@ class TaskEditActivity : AppCompatActivity() {
     companion object{
         const val TASK_ID = "TASK_ID"
 
-        fun startActivity(context: Context, id: Long? = DEFAULT_TASK_ID){
-            val intent = Intent(context, TaskEditActivity::class.java)
+        const val RESULT_TASK_DELETED = 11
+
+        fun startActivityForResult(activity: Activity, id: Long? = DEFAULT_TASK_ID, requestCode: Int){
+            val intent = Intent(activity, TaskEditActivity::class.java)
             intent.putExtra(TASK_ID, id)
-            context.startActivity(intent)
+            activity.startActivityForResult(intent, requestCode)
+        }
+        fun startActivityForResult(context: Context, id: Long? = DEFAULT_TASK_ID, requestCode: Int){
+            startActivityForResult(context as Activity, id, requestCode)
         }
     }
 
@@ -31,13 +37,10 @@ class TaskEditActivity : AppCompatActivity() {
         supportActionBar?.title = "Edit task"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Test code
-//        TODO: get from DB
         val taskID = intent.getLongExtra(TASK_ID, DEFAULT_TASK_ID)
         task = if(taskID != DEFAULT_TASK_ID) getTask(taskID)
                 else Task(name = "", description = "")
         initTaskViews()
-        //--------//
     }
 
     override fun onBackPressed() {
@@ -48,11 +51,20 @@ class TaskEditActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_task_edit, menu)
+        if(task.id == DEFAULT_TASK_ID)
+            menu.findItem(R.id.action_delete).isVisible = false
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.action_close -> {
+                finish()
+                true
+            }
+            R.id.action_delete -> {
+                deleteTask()
+                intent.putExtra(TASK_ID, task)
+                setResult(RESULT_TASK_DELETED, intent)
                 finish()
                 true
             }
@@ -65,11 +77,17 @@ class TaskEditActivity : AppCompatActivity() {
         }
     }
 
+    private fun deleteTask(){
+        GlobalTaskerApplication.getDatabase().taskDao().delete(task)
+    }
     private fun saveTask(){
-        task.name = teTaskName.text.toString()
-        task.description = teTaskDescription.text.toString()
-        GlobalTaskerApplication.getDatabase().taskDao().upsert(task)
-//        Snackbar.make(findViewById(R.id.baseLayoutTaskEdit), "Saved", Snackbar.LENGTH_SHORT).show()
+        // Is it correct?
+        if(teTaskName.text!!.isNotEmpty()) {
+            task.name = teTaskName.text.toString()
+            task.description = teTaskDescription.text.toString()
+
+            GlobalTaskerApplication.getDatabase().taskDao().upsert(task)
+        }
     }
     private fun getTask(id: Long): Task{
         return GlobalTaskerApplication.getDatabase().taskDao().getById(id)
