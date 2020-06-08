@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 val snackbar = Snackbar.make(rvTaskList, R.string.revert_deleting, Snackbar.LENGTH_SHORT)
                 snackbar.duration = 4000
                 snackbar.show()
-                snackbar.setAction(R.string.undo, RestoreTaskOnClickListener(this, data!!.getSerializableExtra(TaskEditActivity.TASK_ID) as Task))
+                snackbar.setAction(R.string.undo, RestoreTaskOnClickListener(this, data!!.getParcelableExtra(TaskEditActivity.TASK_ID) as Task))
             }
         }
     }
