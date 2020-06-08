@@ -4,15 +4,19 @@ import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
+import com.example.globaltasker.activity.MainActivity
+import com.example.globaltasker.activity.TaskEditActivity
 import com.example.globaltasker.persistence.model.Task
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.item_task.view.*
 
-class TaskListAdapter(var tasks: List<Task>, private val listener: (Task) -> Unit) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>(){
+class TaskListAdapter(var activity: MainActivity, var tasks: List<Task>, private val listener: (Task) -> Unit) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>(){
 
     override fun getItemCount(): Int = tasks.size
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder{
         val tmpViewHolder = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
-        return TaskViewHolder(tmpViewHolder)
+        return TaskViewHolder(activity, tmpViewHolder)
     }
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(tasks[position], listener)
@@ -24,7 +28,7 @@ class TaskListAdapter(var tasks: List<Task>, private val listener: (Task) -> Uni
     }
 
     //-------------------- Local class --------------------//
-    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener{
+    class TaskViewHolder(var activity: MainActivity, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener{
         lateinit var task: Task
 
         init {
@@ -47,19 +51,21 @@ class TaskListAdapter(var tasks: List<Task>, private val listener: (Task) -> Uni
             contextMenuDelete.setOnMenuItemClickListener {
                 // Delete task
                 GlobalTaskerApplication.getDatabase().taskDao().delete(task)
+                activity.updateTaskList()
 
                 // TODO: undo button
-                // Restore task
-                /*val snackbar = Snackbar.make(rvTaskList, "Revert deleting?", Snackbar.LENGTH_SHORT)
+                val snackbar = Snackbar.make(activity.rvTaskList, "Revert deleting?", Snackbar.LENGTH_SHORT)
                 snackbar.duration = 4000
                 snackbar.setAction(R.string.undo,
-                    MainActivity.RestoreTaskOnClickListener(this, task)
+                    MainActivity.RestoreTaskOnClickListener(activity, task)
                 )
-                snackbar.show()*/
+                snackbar.show()
                 true
             }
-            // TODO: edit menuItem
-//            contextMenuEdit.setOnMenuItemClickListener {}
+            contextMenuEdit.setOnMenuItemClickListener {
+                TaskEditActivity.startActivityForResult(activity, task.id, requestCode = MainActivity.START_EDIT_ACTIVITY)
+                true
+            }
         }
     }
 }

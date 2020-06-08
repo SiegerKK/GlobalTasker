@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        registerForContextMenu(rvTaskList);
 
         supportActionBar?.title = "Tasks"
 
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRvTaskList(){
         rvTaskList.layoutManager = LinearLayoutManager(this)
-        rvTaskList.adapter = TaskListAdapter(getTaskListFromDb()){
+        rvTaskList.adapter = TaskListAdapter(this, getTaskListFromDb()){
             TaskViewActivity.startActivityForResult(this, it.id, START_VIEW_ACTIVITY)
         }
     }

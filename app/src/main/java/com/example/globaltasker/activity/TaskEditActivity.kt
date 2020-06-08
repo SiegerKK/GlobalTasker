@@ -1,6 +1,7 @@
 package com.example.globaltasker.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -20,10 +21,13 @@ class TaskEditActivity : AppCompatActivity() {
 
         const val RESULT_TASK_DELETED = 11
 
-            fun startActivityForResult(activity: Activity, id: Long? = DEFAULT_TASK_ID, requestCode: Int){
+        fun startActivityForResult(activity: Activity, id: Long? = DEFAULT_TASK_ID, requestCode: Int){
             val intent = Intent(activity, TaskEditActivity::class.java)
             intent.putExtra(TASK_ID, id)
             activity.startActivityForResult(intent, requestCode)
+        }
+        fun startActivityForResult(context: Context, id: Long? = DEFAULT_TASK_ID, requestCode: Int){
+            startActivityForResult(context as Activity, id, requestCode)
         }
     }
 
