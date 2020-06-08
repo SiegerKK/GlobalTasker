@@ -13,4 +13,5 @@
     <string name="delete">Delete</string>
     <string name="undo">Undo</string>
     <string name="edit">Edit</string>
+    <string name="revert_deleting">Revert deleting?</string>
 </resources>

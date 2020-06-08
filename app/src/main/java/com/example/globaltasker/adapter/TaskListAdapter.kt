@@ -54,7 +54,7 @@ class TaskListAdapter(var activity: MainActivity, var tasks: List<Task>, private
                 activity.updateTaskList()
 
                 // TODO: undo button
-                val snackbar = Snackbar.make(activity.rvTaskList, "Revert deleting?", Snackbar.LENGTH_SHORT)
+                val snackbar = Snackbar.make(activity.rvTaskList, R.string.revert_deleting, Snackbar.LENGTH_SHORT)
                 snackbar.duration = 4000
                 snackbar.setAction(R.string.undo,
                     MainActivity.RestoreTaskOnClickListener(activity, task)

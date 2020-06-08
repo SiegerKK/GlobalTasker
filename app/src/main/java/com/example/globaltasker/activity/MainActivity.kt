@@ -78,10 +78,10 @@ class MainActivity : AppCompatActivity() {
 
         if(START_VIEW_ACTIVITY == requestCode || START_EDIT_ACTIVITY == requestCode){
             if(TaskEditActivity.RESULT_TASK_DELETED == resultCode){
-                val snackbar = Snackbar.make(rvTaskList, "Revert deleting?", Snackbar.LENGTH_SHORT)
+                val snackbar = Snackbar.make(rvTaskList, R.string.revert_deleting, Snackbar.LENGTH_SHORT)
                 snackbar.duration = 4000
-                snackbar.setAction(R.string.undo, RestoreTaskOnClickListener(this, data!!.getSerializableExtra(TaskEditActivity.TASK_ID) as Task))
                 snackbar.show()
+                snackbar.setAction(R.string.undo, RestoreTaskOnClickListener(this, data!!.getSerializableExtra(TaskEditActivity.TASK_ID) as Task))
             }
         }
     }
