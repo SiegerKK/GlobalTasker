@@ -38,7 +38,7 @@ class TaskDaoTest {
     fun writeTaskAndReadInList(){
         val task = Task(name = "Job 1", description =  "Job 1 description")
         val id = taskDao.insert(task)
-        val taskById = taskDao.getByID(id)
+        val taskById = taskDao.getById(id)
         assertTrue(task == taskById)
     }
 

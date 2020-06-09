@@ -15,6 +15,7 @@ data class Task(
     var id: Long = DEFAULT_TASK_ID,
     var name: String,
     var description: String,
+    var isCompleted: Boolean = false,
 
     @Embedded
     var deadline: Deadline = Deadline()

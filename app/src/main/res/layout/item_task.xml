@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTaskName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/fab_margin"
-        android:textSize="@dimen/TaskHeaderSize"/>
+        android:textSize="@dimen/TaskHeaderSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTaskDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/fab_margin"
+        app:layout_constraintLeft_toRightOf="@id/tvTaskName"
+        app:layout_constraintBottom_toBottomOf="@id/tvTaskName" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTaskDescription"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/fab_margin"
-        android:maxLines="@integer/TaskDescriptionLinesLimitPhone"/>
+        android:maxLines="@integer/TaskDescriptionLinesLimitPhone"
+        app:layout_constraintStart_toStartOf="@id/tvTaskName"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskName" />
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/ibComplete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_recent_history"
+        android:contentDescription="Button to check task 'completed'"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

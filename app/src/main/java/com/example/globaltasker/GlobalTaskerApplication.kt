@@ -27,7 +27,7 @@ class GlobalTaskerApplication : Application() {
 
         // Database init
         database = Room.databaseBuilder(this, AppDatabase::class.java, "database")
-            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
             .allowMainThreadQueries()
             .build()
     }

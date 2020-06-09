@@ -1,5 +1,6 @@
 package com.example.globaltasker.adapter
 
+import android.graphics.Color
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globaltasker.GlobalTaskerApplication
@@ -28,20 +29,39 @@ class TaskListAdapter(var activity: MainActivity, var tasks: List<Task>, private
     }
 
     //-------------------- Local class --------------------//
-    class TaskViewHolder(var activity: MainActivity, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener{
+    class TaskViewHolder(private var activity: MainActivity, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener{
         lateinit var task: Task
-
-        init {
-            itemView.setOnCreateContextMenuListener(this)
-        }
 
         fun bind(task: Task, listener: (Task) -> Unit) {
             this.task = task
 
+            // Init name, description view
             itemView.tvTaskName.text = task.name
             itemView.tvTaskDescription.text = task.description
 
+            // Init deadline view
+            if(!task.deadline.isActive)
+                itemView.tvTaskDeadline.visibility = View.INVISIBLE
+            else
+                itemView.tvTaskDeadline.visibility = View.VISIBLE
+
+            itemView.tvTaskDeadline.text = task.deadline.toSimpleString()
+            when{
+                task.isCompleted -> itemView.tvTaskDeadline.setBackgroundColor(Color.GREEN)
+                task.deadline.isOut() -> itemView.tvTaskDeadline.setBackgroundColor(Color.RED)
+                task.deadline.isLastDay() -> itemView.tvTaskDeadline.setBackgroundColor(Color.YELLOW)
+                else -> itemView.tvTaskDeadline.setBackgroundColor(Color.TRANSPARENT)
+            }
+            // Init complete button
+            itemView.ibComplete.setOnClickListener {
+                task.isCompleted = !task.isCompleted
+                GlobalTaskerApplication.getDatabase().taskDao().update(task)
+                // TODO: is it necessary?
+                activity.updateTaskList()
+            }
+
             itemView.setOnClickListener { listener(task) }
+            itemView.setOnCreateContextMenuListener(this)
         }
 
         override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -53,7 +73,7 @@ class TaskListAdapter(var activity: MainActivity, var tasks: List<Task>, private
                 GlobalTaskerApplication.getDatabase().taskDao().delete(task)
                 activity.updateTaskList()
 
-                // TODO: undo button
+                // Undo snackbar
                 val snackbar = Snackbar.make(activity.rvTaskList, R.string.revert_deleting, Snackbar.LENGTH_SHORT)
                 snackbar.duration = 4000
                 snackbar.setAction(R.string.undo,
