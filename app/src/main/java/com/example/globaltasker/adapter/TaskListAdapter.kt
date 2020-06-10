@@ -47,12 +47,17 @@ class TaskListAdapter(var activity: MainActivity, var tasks: List<Task>, private
 
             itemView.tvTaskDeadline.text = task.deadline.toSimpleString()
             when{
-                task.isCompleted -> itemView.tvTaskDeadline.setBackgroundColor(Color.GREEN)
-                task.deadline.isOut() -> itemView.tvTaskDeadline.setBackgroundColor(Color.RED)
-                task.deadline.isLastDay() -> itemView.tvTaskDeadline.setBackgroundColor(Color.YELLOW)
-                else -> itemView.tvTaskDeadline.setBackgroundColor(Color.TRANSPARENT)
+                task.isCompleted -> itemView.tvTaskDeadline.setTextColor(Color.BLACK)
+                task.deadline.isOut() -> itemView.tvTaskDeadline.setTextColor(Color.rgb(230, 100, 100))
+                task.deadline.isLastDay() -> itemView.tvTaskDeadline.setTextColor(Color.rgb(230, 200, 100))
+                else -> itemView.tvTaskDeadline.setTextColor(Color.BLACK)
             }
+
             // Init complete button
+            if(task.isCompleted)
+                itemView.ibComplete.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
+            else
+                itemView.ibComplete.setImageResource(android.R.drawable.ic_input_add)
             itemView.ibComplete.setOnClickListener {
                 task.isCompleted = !task.isCompleted
                 GlobalTaskerApplication.getDatabase().taskDao().update(task)

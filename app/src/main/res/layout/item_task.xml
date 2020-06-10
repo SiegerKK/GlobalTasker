@@ -19,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/fab_margin"
-        app:layout_constraintLeft_toRightOf="@id/tvTaskName"
-        app:layout_constraintBottom_toBottomOf="@id/tvTaskName" />
+        app:layout_constraintBottom_toBottomOf="@id/tvTaskName"
+        app:layout_constraintEnd_toStartOf="@+id/ibComplete" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTaskDescription"
@@ -34,9 +34,10 @@
         android:id="@+id/ibComplete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="Button to check task 'completed'"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_recent_history"
-        android:contentDescription="Button to check task 'completed'"/>
+        app:srcCompat="@android:drawable/ic_media_play" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
