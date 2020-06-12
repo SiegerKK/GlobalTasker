@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
@@ -85,8 +86,13 @@ class TaskViewActivity : AppCompatActivity() {
         tvTaskName.text = task.name
         tvTaskDescription.text = task.description
 
-        tvTaskName.setOnClickListener { TaskEditActivity.startActivityForResult(this, task.id, START_EDIT_ACTIVITY) }
-        tvTaskDescription.setOnClickListener { TaskEditActivity.startActivityForResult(this, task.id, START_EDIT_ACTIVITY) }
+        clBase.setOnClickListener { TaskEditActivity.startActivityForResult(this, task.id, START_EDIT_ACTIVITY) }
+        if(task.deadline.isActive) {
+            tvDeadline.visibility = View.VISIBLE
+            tvDeadline.text = task.deadline.toSimpleString()
+        } else {
+            tvDeadline.visibility = View.INVISIBLE
+        }
     }
 
     private fun deleteTask(){

@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity() {
-
     companion object {
         const val START_EDIT_ACTIVITY = 11
         const val START_VIEW_ACTIVITY = 12
@@ -31,13 +30,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Tasks"
 
         initRvTaskList()
-
-        // Plus button
-        fab.setOnClickListener {
-            TaskEditActivity.startActivityForResult(this, requestCode = START_EDIT_ACTIVITY)
-        }
+        initFab()
     }
-
     override fun onResume() {
         super.onResume()
         updateTaskList()
@@ -59,13 +53,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // RecyclerView
     private fun initRvTaskList(){
         rvTaskList.layoutManager = LinearLayoutManager(this)
         rvTaskList.adapter = TaskListAdapter(this, getTaskListFromDb()){
             TaskViewActivity.startActivityForResult(this, it.id, START_VIEW_ACTIVITY)
         }
     }
-
     private fun getTaskListFromDb(): List<Task>{
         return GlobalTaskerApplication.getDatabase().taskDao().getAll()
     }
@@ -73,6 +67,14 @@ class MainActivity : AppCompatActivity() {
         (rvTaskList.adapter as TaskListAdapter).replaceList(getTaskListFromDb())
     }
 
+    // FAB
+    private fun initFab(){
+        fab.setOnClickListener {
+            TaskEditActivity.startActivityForResult(this, requestCode = START_EDIT_ACTIVITY)
+        }
+    }
+
+    // Handle deleting Task from TaskView and TaskEdit
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
