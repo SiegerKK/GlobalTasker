@@ -1,4 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="TaskHeaderSize">20sp</dimen>
+
+    <dimen name="taskHeaderSize">20sp</dimen>
+    <dimen name="simpleTextSize">16sp</dimen>
 </resources>

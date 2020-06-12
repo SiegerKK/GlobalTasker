@@ -12,6 +12,7 @@ data class Deadline(
 ) : Parcelable {
     companion object{
         const val SHORT_DATE_FORMAT = "dd.MM HH:mm"
+        const val DATE_YEAR_FORMAT = "yyyy:MM:dd"
     }
 
     fun set(date: Date){

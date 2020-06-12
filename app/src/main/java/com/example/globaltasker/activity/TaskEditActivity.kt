@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
 import com.example.globaltasker.persistence.model.DEFAULT_TASK_ID
+import com.example.globaltasker.persistence.model.Deadline
 import com.example.globaltasker.persistence.model.Task
 import kotlinx.android.synthetic.main.activity_task_edit.*
 import java.text.SimpleDateFormat
@@ -111,23 +112,26 @@ class TaskEditActivity : AppCompatActivity() {
         // Init deadline view and datePicker
         tvDeadline.isEnabled = task.deadline.isActive
         tvDeadline.text = task.deadline.toSimpleString()
-        tvDeadline.setOnClickListener {
-            // Get Current Date
-            val c: Calendar = Calendar.getInstance()
-            val mYear = c.get(Calendar.YEAR)
-            val mMonth = c.get(Calendar.MONTH)
-            val mDay = c.get(Calendar.DAY_OF_MONTH)
+        tvDeadline.setOnClickListener{deadlineOnClick()}
+    }
 
-            val datePickerDialog = DatePickerDialog(
-                this,
-                OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Bug?? ${monthOfYear + 1}
-                    task.deadline.set(SimpleDateFormat("yyyy:MM:dd", Locale.GERMAN).parse("$year:${monthOfYear + 1}:$dayOfMonth")!!)
-                    tvDeadline.text = task.deadline.toSimpleString()
-                },
-                mYear, mMonth, mDay
-            )
-            datePickerDialog.show()
-        }
+    // Deadline onClockListener()
+    private fun deadlineOnClick() {
+        // Get Current Date
+        val c: Calendar = Calendar.getInstance()
+        val mYear = c.get(Calendar.YEAR)
+        val mMonth = c.get(Calendar.MONTH)
+        val mDay = c.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Bug?? ${monthOfYear + 1}
+                task.deadline.set(SimpleDateFormat(Deadline.DATE_YEAR_FORMAT, Locale.GERMAN).parse("$year:${monthOfYear + 1}:$dayOfMonth")!!)
+                tvDeadline.text = task.deadline.toSimpleString()
+            },
+            mYear, mMonth, mDay
+        )
+        datePickerDialog.show()
     }
 }

@@ -2,6 +2,7 @@ package com.example.globaltasker.adapter
 
 import android.graphics.Color
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globaltasker.GlobalTaskerApplication
 import com.example.globaltasker.R
@@ -29,7 +30,7 @@ class TaskListAdapter(var activity: MainActivity, var tasks: List<Task>, private
     }
 
     //-------------------- Local class --------------------//
-    class TaskViewHolder(private var activity: MainActivity, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener{
+    class TaskViewHolder(private val activity: MainActivity, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener{
         lateinit var task: Task
 
         fun bind(task: Task, listener: (Task) -> Unit) {
@@ -48,8 +49,8 @@ class TaskListAdapter(var activity: MainActivity, var tasks: List<Task>, private
             itemView.tvTaskDeadline.text = task.deadline.toSimpleString()
             when{
                 task.isCompleted -> itemView.tvTaskDeadline.setTextColor(Color.BLACK)
-                task.deadline.isOut() -> itemView.tvTaskDeadline.setTextColor(Color.rgb(230, 100, 100))
-                task.deadline.isLastDay() -> itemView.tvTaskDeadline.setTextColor(Color.rgb(230, 200, 100))
+                task.deadline.isOut() -> itemView.tvTaskDeadline.setTextColor(ContextCompat.getColor(activity, R.color.colorRed))
+                task.deadline.isLastDay() -> itemView.tvTaskDeadline.setTextColor(ContextCompat.getColor(activity, R.color.colorYellow))
                 else -> itemView.tvTaskDeadline.setTextColor(Color.BLACK)
             }
 

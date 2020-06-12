@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/fab_margin"
-        android:textSize="@dimen/TaskHeaderSize"
+        android:textSize="@dimen/taskHeaderSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +34,7 @@
         android:id="@+id/ibComplete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Button to check task 'completed'"
+        android:contentDescription="@string/btnCompleteTaskDescription"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintTop_toTopOf="parent"
