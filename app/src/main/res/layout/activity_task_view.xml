@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:textSize="@dimen/TaskHeaderSize"
+        android:textSize="@dimen/taskHeaderSize"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/tvDeadline"
         app:layout_constraintTop_toTopOf="parent" />
